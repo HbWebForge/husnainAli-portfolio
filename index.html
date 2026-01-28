@@ -18,29 +18,33 @@
 </head>
 
 <body>
-    <section class="hero-section">
+    <section class="hero-section" id="home" >
         <div class="navbar">
             <div class="logo">Husnain Ali</div>
             <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about" >About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skill">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
+                
+           <label for="home">     <li><a href="#home">Home</a></li></label>
+     <label for="about"><li><a href="#about" >About</a></li></label> 
+     <label for="projects"><li><a href="#projects">Projects</a></li></label>
+      <label for="skils"><li><a href="#skill">Skills</a></li></label> 
+     <label for="contact"> <li><a href="#contact">Contact</a></li></label>
             </ul>
         </div>
         <div class="hero-content">
             <div class="intro">
                 <h1>Welcome To My Portfolio</h1>
                 <p>I'm a web developer specializing in creating beautiful and functional websites.</p>
-                <a href="#projects" class="btn">View Projects</a>
+
+           <label for="projects">  <a href="#projects" class="btn">View Projects</a></label>
             </div>
-            <div class="hero-image">
-                <img src="/imgs/hb-logo.png" alt="Hero Image">
+            <div class="hero-image"  >
+               
+              <img href="#about" src="/husnainAli-portfolio/imgs/hb-logo.png"  alt="Hero Image">
+             </div> 
 
     </section>
     
-    <section class="about-section" >
+    <section class="about-section" id="about" >
         <h1>about me</h1>
 <div class="about-data">
 <div class="about-intro">
@@ -54,7 +58,7 @@
 </div>
 </div>
     </section>
-    <section class="projects-section">
+    <section class="projects-section" id="projects">
         <h1>my projects</h1>
         <div class="projects-container">
             <div class="project-card">
@@ -96,7 +100,7 @@
            
         </div>
     </section>
-    <section class="skills-section">
+    <section class="skills-section" id="skill">
         <h1>my skills</h1>
         <div class="skills-container">
             <div class="skill-card">
@@ -119,7 +123,7 @@
             </div>
             
     </section>
- <section class="contact-section">
+ <section class="contact-section" id="contact" >
     <h1>contact me</h1>
     <div class="contact-container">
         <div class="contact-data">

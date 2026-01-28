@@ -39,11 +39,17 @@
   transition: 0.4s;
   padding: 5px;
 }
+.navbar ul li:hover{
+ /* transform: scaleY(120%); */
+  transform: translateY(-3px);
+  transition: all 0.5s;
+}
 .navbar ul li a:hover {
   color: black;
   border-top: 2px solid white;
   border-bottom: 2px solid white;
   font-weight: bold;
+  
 }
 /* -----------------------------------------------hero-section-------------------- */
 .hero-content {
@@ -111,6 +117,7 @@
   justify-content: center;
   align-items: center;
   padding-top: 10%;
+  
 }
 .hero-image img {
   width: 350px;
@@ -121,6 +128,11 @@
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   object-fit: cover;
   object-position: 90% 5%;
+  outline: 5px solid #0f7d8e;
+}
+.hero-image img:hover{
+  animation: none;
+  
 }
 @keyframes move {
   0%,
