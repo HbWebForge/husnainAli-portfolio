@@ -6,7 +6,7 @@
   font-family: "Poppins", sans-serif;
 }
 .navbar {
-  background-color: black;
+  background-color: #0f7d8e;
   color: white;
   height: 80px;
   width: 100%;
@@ -22,7 +22,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #0f7d8e;
+  color: white;
 }
 .navbar ul {
   list-style: none;
@@ -40,9 +40,10 @@
   padding: 5px;
 }
 .navbar ul li a:hover {
-  color: #0f7d8e;
-  border-top: 2px solid #0f7d8e;
-  border-bottom: 2px solid #0f7d8e;
+  color: black;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  font-weight: bold;
 }
 /* -----------------------------------------------hero-section-------------------- */
 .hero-content {
