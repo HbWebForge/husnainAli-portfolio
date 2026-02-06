@@ -252,7 +252,7 @@
   align-items: center;
   padding: 20px;
 }
-.projects-section h1 {
+/* .projects-section h1 {
   font-size: 50px;
   margin-bottom: 40px;
   color: #0f7d8e;
@@ -260,7 +260,7 @@
   display: inline-block;
   font-weight: 600;
   text-transform: uppercase;
-}
+} */
 .projects-container {
   width: 100%;
   display: flex;
@@ -330,7 +330,7 @@
   align-items: center;
  
 }
-.skills-section h1 {
+.skills-section h1 , .heading {
   font-size: 50px;
   margin-bottom: 10px;
   color: #0F172A;
@@ -339,21 +339,21 @@
   font-weight: 700;
   text-transform: uppercase;
 }
-.skills-section p{
+.skills-section p, .subtag{
   margin-bottom: 40px;
   color: #64748B;
 }
 .skills-container {
   width: 100%;
   display: flex;
-  justify-content:flex-start;
+  justify-content:center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
 }
 .skill-card {
   width: 30%;
-  height: 300px;
+  height: 350px;
   background-color: whitesmoke;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
@@ -362,7 +362,7 @@
   /* flex-wrap: wrap; */
   justify-content: start;
   align-items: center;
-  padding: 20px;
+  padding: 24px 32px;
   transition: 0.4s;
 }
 .skill-card:hover {
@@ -370,29 +370,19 @@
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4);
 }
 .skill-card h3 {
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 600;
   margin-bottom: 10px;
-  color: #0f7d8e;
+  color: #0F172A;
   text-transform: capitalize;
   text-align: start;
 }
-.skill-card span {
-  text-transform: capitalize;
-  font-size: 16px;
-  font-weight: 500;
+.skill-card ul li{
+  font-size: 18px;
+  line-height: 1.6;
   color: black;
-  background-color: #0f7d8e;
-  padding: 5px 10px;
-  border: 3px solid #0f7d8e;
-  margin: 5px;
-  border-radius: 10px;
+  margin: 3px ;
 }
-.skill-card span:hover{
-    transform: scale(1.1);
-    transition: all 0.3s;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-    background-color: white;
-  }
 /*-----------------------------------------------contact section----------------- */
 .contact-section {
   width: 100%;
