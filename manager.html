@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ice Planet POS | Manager</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/qz-tray@2.2.4/qz-tray.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-shell">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+
+<img src="src/images/logo.jpg" alt="">
+<h2>Ice Planet</h2>
+          </div>
+          
+        
+
+
+      <div class="user-time" >
+          <div class="user-pill" id="user-pill">  
+            
+            Manager • Loading...</div> 
+             <span class="clock-pill" id="live-clock">00:00</span>
+             </div>
+        </div>
+        
+        <nav class="navbar">
+          <ul class="nav-list">
+            <li><button class="nav-link " data-section="dashboard">Dashboard</button></li>
+            <li><button class="nav-link" data-section="orders">Manage Orders</button></li>
+            <li><button class="nav-link active" data-section="create-order">Create Order</button></li>
+            <li><button class="nav-link" data-section="reports">Reports</button></li>
+            <!-- <li><button class="nav-link" data-section="deals">Deals</button></li> -->
+            <!-- <li><button class="nav-link" data-section="categories">Categories</button></li> -->
+            <!-- <li><button class="nav-link" data-section="products">Products</button></li> -->
+            <li><button class="nav-link" data-section="stock">Stock</button></li>
+            <!-- <li><button class="nav-link" data-section="suppliers">Suppliers</button></li> -->
+            <li><button class="nav-link" data-section="workers">Workers</button></li>
+          </ul>
+            <div class="sidebar-footer">
+          <button class="btn btn-ghost" id="logout-btn" style=" font-size: 15px; color:white; border: 4px solid  red;  background: rgba(255,255,255,0.05);">Logout</button>
+        </div>
+        </nav>
+      
+      </aside>
+
+      <main class="main-panel">
+        <div class="topbar">
+          <h3 id="section-title">Create Order</h3>
+          <div class="topbar-right">
+            <!-- <span class="clock-pill" id="live-clock">00:00</span> -->
+            <span id="user-name">User</span>
+          </div>
+        </div>
+
+        <section class="section-content " data-section="dashboard">
+          <div class="kpi-grid" id="dashboard-kpis"></div>
+          <div class="grid-2" style="margin-top:20px;">
+            <div class="panel">
+              <h3>Top Selling Products</h3>
+              <div id="top-products"></div>
+            </div>
+            <div class="panel">
+              <h3>Revenue Summary</h3>
+              <div id="revenue-summary"></div>
+            </div>
+            <div class="panel">
+              <h3>Low Stock Alerts</h3>
+              <div id="low-stock-alerts"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="orders">
+          <div class="panel">
+            <div class="section-heading">
+              <div>
+                <h3>All Orders</h3>
+                <p class="muted">Pending orders can be edited or paid. Paid orders are locked.</p>
+              </div>
+            </div>
+            <div id="all-orders"></div>
+          </div>
+        </section>
+
+        <section class="section-content active" data-section="create-order">
+          <div class="grid-2">
+            <div class="panel">
+              <div class="form-group order-type-group">
+                <label class="order-type-heading">Choose your order style <span>اپنی پسند منتخب کریں</span></label>
+                <div class="inline-fields order-type-switch">
+                  <label class="order-type-option"><input type="radio" name="manager-order-type" value="dine-in" checked /><span class="order-type-icon">🍽️</span><span>Dine-in<small>ڈائن ان</small></span></label>
+                  <label class="order-type-option"><input type="radio" name="manager-order-type" value="takeaway" /><span class="order-type-icon">🛍️</span><span>Takeaway<small>ٹیک اوے</small></span></label>
+                  <label class="order-type-option"><input type="radio" name="manager-order-type" value="delivery" /><span class="order-type-icon">🛵</span><span>Delivery<small>ڈیلیوری</small></span></label>
+                </div>
+              </div>
+              <div class="categories" id="manager-category-strip"></div>
+              <div id="manager-flavor-picker"></div>
+              <div class="items-grid" id="manager-products"></div>
+            </div>
+            <aside class="order-summary">
+              <h3>Order Summary</h3>
+              <div id="manager-order-meta"></div>
+              <ul class="summary-list" id="manager-cart"></ul>
+              <div class="bill-row"><span>Subtotal</span><span id="manager-subtotal">Rs 0</span></div>
+              <div class="bill-row"><span>Discount</span><span id="manager-discount">Rs 0</span></div>
+              <div class="bill-row total"><span>Total</span><span id="manager-total">Rs 0</span></div>
+              <div class="action-row">
+                <button class="btn btn-secondary" id="manager-clear-cart" style="color: red; border: 3px solid red; " onmouseover="this.style.backgroundColor='red'; this.style.color='white'"  onmouseout="this.style.backgroundColor='white';  this.style.color='red'"  type="button">Clear Cart</button>
+                <button class="btn btn-primary" id="manager-submit-order"   type="button">Submit Order</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="reports">
+          <div class="panel">
+            <h3>Reports</h3>
+            <div class="inline-fields">
+              <div class="form-group"><label>Type</label><select id="report-type"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+              <div class="form-group"><label>From</label><input id="report-from" type="date" /></div>
+              <div class="form-group"><label>To</label><input id="report-to" type="date" /></div>
+            </div>
+            <div class="action-row">
+              <button class="btn btn-primary" id="generate-report">Generate</button>
+              <button class="btn btn-secondary" id="print-report">Download as PDF</button>
+            </div>
+            <div id="report-output" style="margin-top:18px;"></div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="deals">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Create Deal</h3>
+              <div class="form-group"><label>Name</label><input id="deal-name" type="text" /></div>
+              <div class="form-group"><label>Price</label><input id="deal-price" type="number" /></div>
+              <div class="form-group"><label>Product</label><select id="deal-product"></select></div>
+              <div class="action-row">
+                <button class="btn btn-primary" id="add-deal-item" type="button">Add Item</button>
+                <button class="btn btn-success" id="save-deal" type="button">Save Deal</button>
+              </div>
+              <div id="deal-preview"></div>
+            </div>
+            <div class="panel">
+              <h3>Active Deals</h3>
+              <div id="deal-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="categories">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Add Category</h3>
+              <div class="form-group"><label>Name</label><input id="category-name" type="text" /></div>
+              <button class="btn btn-primary" id="save-category" type="button">Save Category</button>
+            </div>
+            <div class="panel">
+              <h3>Categories</h3>
+              <div id="category-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="products">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Add Product</h3>
+              <div class="form-group"><label>Name</label><input id="product-name" type="text" /></div>
+              <div class="form-group"><label>Price</label><input id="product-price" type="number" /></div>
+              <div class="form-group"><label>Category</label><select id="product-category"></select></div>
+              <button class="btn btn-primary" id="save-product" type="button">Save Product</button>
+            </div>
+            <div class="panel">
+              <h3>Products</h3>
+              <div id="product-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="stock">
+          <div class="grid-2 stock-layout">
+            <div class="panel">
+              <h3>Add Ingredient Purchase</h3>
+              <p class="muted">Purchases are entered manually and added to on-hand stock.</p>
+              <div class="form-group"><label>Ingredient</label><select id="stock-ingredient"></select></div>
+              <div class="form-group"><label>Quantity Purchased</label><input id="stock-qty" type="number" min="0.01" step="0.01" /></div>
+              <div class="form-group"><label>Unit Price (Rs)</label><input id="stock-unit-price" type="number" min="0" step="0.01" /></div>
+              <div class="form-group"><label>Minimum Threshold</label><input id="stock-threshold" type="number" /></div>
+              <div class="form-group"><label>Supplier</label><input id="stock-supplier-name" type="text" /></div>
+              <div class="form-group"><label>Reference</label><input id="stock-reference" type="text" placeholder="Invoice / purchase reference" /></div>
+              <div class="form-group"><label>Date</label><input id="stock-purchase-date" type="date" /></div>
+              <button class="btn btn-primary" id="save-stock" type="button">Add Stock</button>
+            </div>
+            <div class="panel">
+              <h3>Record Manual Usage</h3>
+              <p class="muted">Record ingredient usage here. Orders do not change stock automatically.</p>
+              <div class="form-group"><label>Ingredient</label><select id="stock-use-ingredient"></select></div>
+              <div class="form-group"><label>Quantity Used</label><input id="stock-use-qty" type="number" min="0.01" step="0.01" /></div>
+              <div class="form-group"><label>Usage Note</label><input id="stock-use-reference" type="text" placeholder="Waste, preparation, adjustment..." /></div>
+              <div class="form-group"><label>Date</label><input id="stock-use-date" type="date" /></div>
+              <button class="btn btn-primary" id="save-stock-usage" type="button">Record Usage</button>
+            </div>
+            <div class="panel">
+              <h3>Inventory Rules</h3>
+              <p class="muted">Purchases add stock; manual usage subtracts stock. Paid, cancelled, and edited orders never update inventory.</p>
+              <div class="panel-soft"><strong>Packaging</strong><p class="muted">2, 3 and 4 scoop cups use Small Cup stock. 6 scoops uses Half Litre Cup and 12 scoops uses One Litre Cup.</p></div>
+            </div>
+            <div class="panel">
+              <h3>Current Stock & History</h3>
+              <div id="stock-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="suppliers">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Add Supplier</h3>
+              <div class="form-group"><label>Name</label><input id="supplier-name" type="text" /></div>
+              <div class="form-group"><label>Phone</label><input id="supplier-phone" type="text" /></div>
+              <div class="form-group"><label>Email</label><input id="supplier-email" type="email" /></div>
+              <div class="form-group"><label>Company</label><input id="supplier-company" type="text" /></div>
+              <div class="form-group"><label>Products</label><input id="supplier-products" type="text" /></div>
+              <div class="form-group"><label>Notes</label><textarea id="supplier-notes"></textarea></div>
+              <button class="btn btn-primary" id="save-supplier" type="button">Save Supplier</button>
+            </div>
+            <div class="panel">
+              <h3>Suppliers</h3>
+              <div id="supplier-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-content" data-section="workers">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Add Worker</h3>
+              <div class="form-group"><label>Name</label><input id="worker-name" type="text" /></div>
+              <div class="form-group"><label>Age</label><input id="worker-age" type="number" min="16" /></div>
+              <div class="form-group"><label>Address</label><input id="worker-address" type="text" /></div>
+              <div class="form-group"><label>Contact</label><input id="worker-contact" type="text" /></div>
+              <div class="form-group"><label>Join Date</label><input id="worker-join-date" type="date" /></div>
+              <div class="form-group"><label>Salary</label><input id="worker-salary" type="number" min="0" /></div>
+              <div class="form-group"><label for="worker-role">Role</label><input id="worker-role" type="text" placeholder="e.g. Waiter, Cashier, Chef" required /></div>
+              <button class="btn btn-primary" id="save-worker" type="button">Save Worker</button>
+            </div>
+            <div class="panel">
+              <h3>Workers</h3>
+              <div id="worker-list"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="order-modal-backdrop" class="modal-backdrop" aria-hidden="true"></div>
+    <div id="payment-modal-backdrop" class="modal-backdrop" aria-hidden="true"></div>
+    <div id="manager-lock-backdrop" class="modal-backdrop" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="manager-lock-title">
+        <div class="modal-header">
+          <h3 id="manager-lock-title">Manager verification</h3>
+          <button class="modal-close" id="manager-lock-close" type="button" aria-label="Close password prompt">×</button>
+        </div>
+        <p class="muted">Enter the secondary manager password to open this section.</p>
+        <div class="form-group"><label for="manager-secondary-password">Secondary password</label><input id="manager-secondary-password" type="password" autocomplete="current-password" /></div>
+        <div class="action-row">
+          <button class="btn btn-primary" id="manager-lock-submit" type="button">Unlock</button>
+          <button class="btn btn-ghost" id="manager-lock-cancel" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="src/app.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const user = window.IcePalace.requireRole('Manager');
+        if (!user) return;
+
+        window.renderManagerDashboard = function () {
+          renderDashboard();
+          renderOrders();
+          renderOrderBuilder();
+          renderDeals();
+          renderCategoryList();
+          renderProductList();
+          renderStockList();
+          renderSuppliers();
+          renderWorkers();
+        };
+
+        document.getElementById('user-pill').textContent = 'Manager • ' + user.name;
+        document.getElementById('user-name').textContent = user.name;
+
+        const navButtons = document.querySelectorAll('.nav-link');
+        let pendingProtectedSection = null;
+
+        function ensureManagerAccess(sectionName) {
+          const protectedSections = ['dashboard', 'reports', 'categories', 'products', 'stock', 'workers'];
+          if (!protectedSections.includes(sectionName)) return true;
+          pendingProtectedSection = sectionName;
+          document.getElementById('manager-lock-backdrop').classList.add('open');
+          document.getElementById('manager-secondary-password').focus();
+          return false;
+        }
+
+        function closeManagerLock() {
+          document.getElementById('manager-lock-backdrop').classList.remove('open');
+          document.getElementById('manager-secondary-password').value = '';
+          pendingProtectedSection = null;
+        }
+
+        document.getElementById('manager-lock-close').addEventListener('click', closeManagerLock);
+        document.getElementById('manager-lock-cancel').addEventListener('click', closeManagerLock);
+
+        document.getElementById('manager-lock-submit').addEventListener('click', () => {
+          const key = 'icepalace_manager_secondary_lock';
+          const lockState = JSON.parse(sessionStorage.getItem(key) || '{"wrongAttempts": 0, "allowed": false, "prompted": false}');
+          const value = document.getElementById('manager-secondary-password').value;
+          document.getElementById('manager-secondary-password').value = '';
+          if (value === '6608') {
+            lockState.wrongAttempts = 0;
+            sessionStorage.setItem(key, JSON.stringify(lockState));
+            document.getElementById('manager-lock-backdrop').classList.remove('open');
+            const target = pendingProtectedSection;
+            pendingProtectedSection = null;
+            if (target) setActiveManagerSection(target);
+            return;
+          }
+          lockState.wrongAttempts = Number(lockState.wrongAttempts || 0) + 1;
+          sessionStorage.setItem(key, JSON.stringify(lockState));
+          if (lockState.wrongAttempts >= 3) {
+            window.IcePalace.showToast('Incorrect manager password. Logging out.', 'error');
+            localStorage.removeItem(window.IcePalace.STORAGE_KEYS.currentUser);
+            sessionStorage.removeItem(key);
+            setTimeout(() => { window.location.href = 'index.html'; }, 700);
+            return;
+          }
+          window.IcePalace.showToast('Incorrect manager password. Attempts left: ' + (3 - lockState.wrongAttempts) + '.', 'error');
+        });
+
+        navButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const section = button.dataset.section;
+            if (!ensureManagerAccess(section)) return;
+            document.querySelectorAll('.section-content').forEach((sectionEl) => {
+              sectionEl.classList.toggle('active', sectionEl.dataset.section === section);
+            });
+            navButtons.forEach((nav) => nav.classList.toggle('active', nav === button));
+            document.getElementById('section-title').textContent = button.textContent.trim();
+          });
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+          localStorage.removeItem(window.IcePalace.STORAGE_KEYS.currentUser);
+          window.location.href = 'index.html';
+        });
+
+        const managerState = { selectedCategory: 'all', cart: [], dealItems: [], cupFlavorSelections: {} };
+        const managerSound = (action, itemName) => window.IcePalace.playSound(action, itemName);
+
+        function setActiveManagerSection(sectionName) {
+          document.querySelectorAll('.nav-link').forEach((button) => {
+            const isActive = button.dataset.section === sectionName;
+            button.classList.toggle('active', isActive);
+          });
+          document.querySelectorAll('.section-content').forEach((section) => {
+            section.classList.toggle('active', section.dataset.section === sectionName);
+          });
+          const sectionTitle = document.getElementById('section-title');
+          if (sectionTitle) {
+            const label = sectionName === 'orders' ? 'Manage Orders' : sectionName === 'dashboard' ? 'Dashboard' : sectionName === 'create-order' ? 'Create Order' : sectionName === 'reports' ? 'Reports' : sectionName === 'categories' ? 'Categories' : sectionName === 'products' ? 'Products' : sectionName === 'stock' ? 'Stock' : 'Workers';
+            sectionTitle.textContent = label;
+          }
+        }
+
+        function buildCupFlavorPicker(categoryId, categoryName) {
+          const cupConfig = window.IcePalace.getScoopCupConfig(categoryName);
+          if (!cupConfig) return '';
+          const selection = managerState.cupFlavorSelections[categoryId] || {};
+          const total = window.IcePalace.getFlavorSelectionTotal(selection);
+          const flavorTiles = window.IcePalace.getFlavorCatalog().map((flavor) => {
+            const selectedQty = Number(selection[flavor] || 0);
+            const detail = window.IcePalace.getFlavorDetails(flavor);
+            return `
+              <div class="flavor-tile ${selectedQty ? 'selected' : ''}">
+                <img class="flavor-photo" src="${detail.image}" alt="${flavor} ice cream flavor" loading="lazy">
+                <div class="flavor-name">${flavor}<span lang="ur" dir="rtl">${detail.urdu}</span></div>
+                <div class="flavor-controls">
+                  <button type="button" data-flavor-action="decrease" data-category-id="${categoryId}" data-flavor-name="${flavor}" ${selectedQty ? '' : 'disabled'}>−</button>
+                  <span>${selectedQty}</span>
+                  <button type="button" data-flavor-action="increase" data-category-id="${categoryId}" data-flavor-name="${flavor}" aria-label="Add ${flavor} scoop">+</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="flavor-picker-panel">
+              <div class="flavor-header">
+                <div>
+                  <strong>${categoryName}</strong>
+                  <div class="muted">${cupConfig.capacity} scoop capacity • ${window.IcePalace.formatCurrency(cupConfig.price)}</div>
+                </div>
+                
+                <span class="flavor-progress">${total} / ${cupConfig.capacity} selected</span>
+              </div>
+               <div class="action-row" style="margin: 12px; ">
+                <button class="btn btn-primary" type="button" class="font-size:18px;" id="manager-add-scoop-cup" ${total === 0 ? 'disabled' : ''}>Add ${categoryName} to cart</button>
+              </div>
+              <div class="flavor-grid">${flavorTiles}</div>
+            
+              ${total >= cupConfig.capacity ? '<div class="muted tiny-note">Cup is full. Remove a flavor to change the mix.</div>' : ''}
+            </div>
+          `;
+        }
+
+        function applyCupFlavorChange(categoryId, flavorName, delta) {
+          const category = window.IcePalace.getCategoryById(categoryId);
+          if (!category) return;
+          const config = window.IcePalace.getScoopCupConfig(category.name);
+          if (!config) return;
+          const selection = { ...(managerState.cupFlavorSelections[categoryId] || {}) };
+          const nextQty = Math.max((Number(selection[flavorName] || 0) + delta), 0);
+          const total = window.IcePalace.getFlavorSelectionTotal(selection) + delta;
+          if (delta > 0 && total > config.capacity) {
+            window.IcePalace.showToast('This cup is already full.', 'error');
+            managerSound('error');
+            return;
+          }
+          if (nextQty <= 0) delete selection[flavorName];
+          else selection[flavorName] = nextQty;
+          if (Object.keys(selection).length) managerState.cupFlavorSelections[categoryId] = selection;
+          else delete managerState.cupFlavorSelections[categoryId];
+          managerSound(delta > 0 ? 'flavorAdd' : 'flavorRemove', flavorName);
+          renderOrderBuilder();
+        }
+
+        function addCupSelectionToCart(categoryId) {
+          const category = window.IcePalace.getCategoryById(categoryId);
+          if (!category) return;
+          const selection = managerState.cupFlavorSelections[categoryId] || {};
+          if (!Object.keys(selection).length) {
+            window.IcePalace.showToast('Choose at least one flavor before adding the cup.', 'error');
+            managerSound('error');
+            return;
+          }
+          const cupConfig = window.IcePalace.getScoopCupConfig(category.name);
+          if (!cupConfig) return;
+          const summary = `${category.name} — ${window.IcePalace.formatFlavorBreakdown(selection)} — ${window.IcePalace.formatCurrency(cupConfig.price)}`;
+          const sameFlavors = (left, right) => JSON.stringify(Object.entries(left || {}).filter(([, qty]) => Number(qty) > 0).sort()) === JSON.stringify(Object.entries(right || {}).filter(([, qty]) => Number(qty) > 0).sort());
+          const existingCup = managerState.cart.find((item) => item.kind === 'scoop-cup' && item.categoryId === categoryId && sameFlavors(item.flavors, selection));
+          const cupItem = {
+            id: `cup-${categoryId}-${window.IcePalace.uid('line')}`,
+            kind: 'scoop-cup',
+            categoryId,
+            name: category.name,
+            label: cupConfig.displayName,
+            unitPrice: cupConfig.price,
+            quantity: 1,
+            flavors: { ...selection },
+            summary
+          };
+          if (existingCup) existingCup.quantity += 1;
+          else {
+            managerState.cart.push(cupItem);
+          }
+          managerSound('productAdd', cupConfig.displayName);
+          delete managerState.cupFlavorSelections[categoryId];
+          renderCart();
+        }
+
+        function renderDashboard() {
+          const orders = window.IcePalace.getOrders();
+          const today = new Date();
+          const dateKey = today.toDateString();
+          const todayOrders = orders.filter((order) => new Date(order.createdAt).toDateString() === dateKey);
+          const revenueToday = todayOrders.filter((order) => order.status === 'paid').reduce((sum, order) => sum + Number(order.total || 0), 0);
+          const pendingOrders = todayOrders.filter((order) => order.status === 'pending').length;
+          const completedOrders = todayOrders.filter((order) => order.status === 'paid').length;
+          const stock = window.IcePalace.getStock();
+          const lowStock = stock.filter((entry) => Number(entry.quantity || 0) < Number(entry.minimumThreshold || 0));
+          const catalogQuantity = stock.reduce((sum, entry) => sum + Number(entry.quantity || 0), 0);
+          const catalogValue = stock.reduce((sum, entry) => sum + Number(entry.quantity || 0) * Number(entry.unitPrice || 0), 0);
+
+          document.getElementById('dashboard-kpis').innerHTML = `
+            <div class="kpi-card" id="kpi-todays-revenue" data-section="orders" tabindex="0"><div class="label">Today's Revenue</div><div class="value">${window.IcePalace.formatCurrency(revenueToday)}</div></div>
+            <div class="kpi-card" id="kpi-pending-orders" data-section="orders" tabindex="0"><div class="label">Pending Today</div><div class="value">${pendingOrders}</div></div>
+            <div class="kpi-card"><div class="label">Completed Today</div><div class="value">${completedOrders}</div></div>
+            <div class="kpi-card"><div class="label">Catalog Value</div><div class="value">${window.IcePalace.formatCurrency(catalogValue)}</div><div class="kpi-meta">${catalogQuantity} items in stock</div></div>
+          `;
+
+          document.getElementById('kpi-todays-revenue')?.addEventListener('click', () => setActiveManagerSection('orders'));
+          document.getElementById('kpi-pending-orders')?.addEventListener('click', () => setActiveManagerSection('orders'));
+
+          const salesMap = {};
+          orders.filter((order) => order.status === 'paid').forEach((order) => {
+            (order.items || []).forEach((item) => {
+              salesMap[item.name] = (salesMap[item.name] || 0) + Number(item.quantity || 0);
+            });
+          });
+          const topSales = Object.entries(salesMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+          document.getElementById('top-products').innerHTML = topSales.length
+            ? topSales.map(([name, qty], index) => `<div class="bill-row"><span>#${index + 1} ${name}</span><span>${qty}</span></div>`).join('')
+            : '<div class="empty-state">No product sales yet.</div>';
+
+          const weeklyRevenue = orders.filter((order) => order.status === 'paid' && new Date(order.createdAt) > new Date(Date.now() - 7 * 86400000)).reduce((sum, order) => sum + Number(order.total || 0), 0);
+          document.getElementById('revenue-summary').innerHTML = `
+            <div class="bill-row"><span>Daily Revenue</span><span>${window.IcePalace.formatCurrency(revenueToday)}</span></div>
+            <div class="bill-row"><span>Weekly Revenue</span><span>${window.IcePalace.formatCurrency(weeklyRevenue)}</span></div>
+          `;
+          const lowStockBox = document.getElementById('low-stock-alerts');
+          if (lowStockBox) {
+            lowStockBox.innerHTML = lowStock.length
+              ? lowStock.map((entry) => `<div class="bill-row"><span>Low stock: ${entry.name}</span><strong>${Number(entry.quantity || 0).toFixed(2)} / ${Number(entry.minimumThreshold || 0)}</strong></div>`).join('')
+              : '<div class="empty-state">No low-stock items.</div>';
+          }
+        }
+
+        function renderOrders() {
+          const orders = window.IcePalace.getOrders();
+          const container = document.getElementById('all-orders');
+          if (!orders.length) {
+            container.innerHTML = '<div class="empty-state">No orders found.</div>';
+            return;
+          }
+
+          container.innerHTML = orders.map((order) => {
+            const isPending = order.status === 'pending';
+            const isPaid = order.status === 'paid';
+            return `
+            <div class="panel" style="margin-bottom:12px;">
+              <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap;">
+                <div>
+                  <strong>#${order.id}</strong><br>
+                  <span class="muted">${window.IcePalace.getOrderCustomerDisplay(order)} • ${order.type}</span>
+                </div>
+                <span class="status-badge status-${order.status}">${order.status}</span>
+              </div>
+              <p class="muted" style="margin:12px 0 0;">${(order.items || []).map((item) => item.name).join(', ') || 'No items'} • ${window.IcePalace.formatCurrency(order.total || 0)}</p>
+              <div class="action-row">
+                <button class="btn btn-secondary js-view-order" data-order-id="${order.id}" type="button">View</button>
+                <button class="btn btn-success js-pay-order" data-order-id="${order.id}" type="button" ${!isPending ? 'disabled' : ''}>Paid Order</button>
+                <button class="btn btn-secondary js-print-order-slip" data-order-id="${order.id}" data-slip-type="kitchen" type="button">Kitchen Slip</button>
+                <button class="btn btn-secondary js-print-order-slip" data-order-id="${order.id}" data-slip-type="customer" style=" border:none; color:white; background-color:#1e8f5c;" type="button">Customer Slip</button>
+              </div>
+            </div>
+          `; }).join('');
+        }
+
+        function completeOrder(orderId) {
+          const orders = window.IcePalace.getOrders();
+          const index = orders.findIndex((order) => order.id === orderId);
+          if (index < 0) return;
+          orders[index].status = 'paid';
+          orders[index].completedAt = new Date().toISOString();
+          window.IcePalace.saveOrders(orders);
+          window.renderManagerDashboard();
+          window.IcePalace.showToast('Order marked as completed.');
+        }
+
+        function openPaymentModal(orderId) {
+          const order = window.IcePalace.getOrders().find((entry) => entry.id === orderId);
+          if (!order || order.status !== 'pending') return;
+          const backdrop = document.getElementById('payment-modal-backdrop');
+          backdrop.innerHTML = `
+            <div class="modal payment-modal">
+              <div class="modal-header"><h3>Pay Order #${order.id}</h3><button class="modal-close" type="button" data-close-payment="true">×</button></div>
+              <div class="payment-layout">
+                <div class="panel panel-soft"><h4>Order Summary</h4>${(order.items || []).map((item) => `<div class="bill-row"><span>${item.name} × ${item.quantity}</span><span>${window.IcePalace.formatCurrency(item.quantity * item.unitPrice)}</span></div>`).join('')}<div class="bill-row total"><span>Total</span><span>${window.IcePalace.formatCurrency(order.total)}</span></div></div>
+                <div class="panel panel-soft"><h4>Payment Method</h4><div class="form-group"><label for="payment-method">Select payment way</label><select id="payment-method"><option>Cash</option><option>Bank Account</option><option>EasyPaisa</option><option>JazzCash</option></select></div><button class="btn btn-success js-confirm-payment" data-order-id="${order.id}" type="button">Confirm Paid</button></div>
+              </div>
+            </div>`;
+          backdrop.classList.add('open');
+        }
+
+        function closePaymentModal() {
+          document.getElementById('payment-modal-backdrop').classList.remove('open');
+        }
+
+        function payOrder(orderId) {
+          const method = document.getElementById('payment-method')?.value;
+          const orders = window.IcePalace.getOrders();
+          const index = orders.findIndex((order) => order.id === orderId);
+          if (index < 0 || orders[index].status !== 'pending' || !method) return;
+          orders[index] = { ...orders[index], status: 'paid', payment: { method, paidAt: new Date().toISOString(), paidBy: user.name }, paidAt: new Date().toISOString() };
+          window.IcePalace.recordOrderStockUsage(orders[index]);
+          window.IcePalace.saveOrders(orders);
+          closePaymentModal();
+          window.renderManagerDashboard();
+          window.IcePalace.showToast('Order paid successfully. It is now locked.');
+        }
+
+        function cancelOrder(orderId, reason) {
+          const orders = window.IcePalace.getOrders();
+          const index = orders.findIndex((order) => order.id === orderId);
+          if (index < 0) return;
+          orders[index].status = 'cancelled';
+          orders[index].cancelledAt = new Date().toISOString();
+          orders[index].cancelReason = reason || 'Cancelled by manager';
+          window.IcePalace.saveOrders(orders);
+          window.renderManagerDashboard();
+          window.IcePalace.showToast('Order cancelled.');
+        }
+
+        function renderOrderBuilder() {
+          const categories = window.IcePalace.getCategories();
+          const products = window.IcePalace.getProducts();
+          const strip = document.getElementById('manager-category-strip');
+          const selectedCategory = categories.find((category) => category.id === managerState.selectedCategory) || null;
+
+          strip.innerHTML = [`<button class="category-chip ${managerState.selectedCategory === 'all' ? 'active' : ''}" data-category="all" type="button">All</button>`]
+            .concat(categories.map((category) => `<button class="category-chip ${managerState.selectedCategory === category.id ? 'active' : ''}" data-category="${category.id}" type="button">${category.name || 'Uncategorized'}</button>`)).join('');
+
+          const flavorPickerHost = document.getElementById('manager-flavor-picker');
+          if (selectedCategory && window.IcePalace.getScoopCupConfig(selectedCategory.name)) {
+            flavorPickerHost.innerHTML = buildCupFlavorPicker(selectedCategory.id, selectedCategory.name);
+            flavorPickerHost.querySelectorAll('.flavor-photo').forEach((image) => {
+              image.addEventListener('error', () => { image.hidden = true; });
+            });
+            const addCupButton = document.getElementById('manager-add-scoop-cup');
+            addCupButton?.addEventListener('click', () => addCupSelectionToCart(selectedCategory.id));
+            flavorPickerHost.querySelectorAll('[data-flavor-action]').forEach((button) => {
+              button.addEventListener('click', () => {
+                const delta = button.dataset.flavorAction === 'increase' ? 1 : -1;
+                applyCupFlavorChange(button.dataset.categoryId, button.dataset.flavorName, delta);
+              });
+            });
+            document.getElementById('manager-products').innerHTML = '';
+          } else {
+            flavorPickerHost.innerHTML = '';
+            const legacyCategoryTerms = { 'c-1': 'cone', 'c-2': 'scoop', 'c-3': 'shake', 'c-4': 'coffee', 'c-5': 'special' };
+            const selectedCategoryName = (selectedCategory?.name || '').toLowerCase();
+            const filtered = managerState.selectedCategory === 'all' ? products : products.filter((product) => {
+              if (product.categoryId === managerState.selectedCategory) return true;
+              const legacyTerm = legacyCategoryTerms[product.categoryId];
+              return Boolean(legacyTerm && selectedCategoryName.includes(legacyTerm));
+            });
+            document.getElementById('manager-products').innerHTML = filtered.map((product) => `
+              <button class="product-card" type="button" data-product-id="${product.id}" aria-label="Add ${product.name} to order">
+                <span class="product-image-wrap">
+                  <img class="product-photo" src="${window.IcePalace.getProductDetails(product.name).image}" alt="${product.name}" loading="lazy">
+                </span>
+                <h5>${product.name}<span lang="ur" dir="rtl">${window.IcePalace.getProductDetails(product.name).urdu}</span></h5>
+                <div class="price">${window.IcePalace.formatCurrency(product.price)}</div>
+              </button>
+            `).join('');
+            document.querySelectorAll('#manager-products .product-photo').forEach((image) => {
+              image.addEventListener('error', () => { image.hidden = true; });
+            });
+            document.querySelectorAll('#manager-products .product-card').forEach((button) => {
+              button.addEventListener('click', () => {
+                const product = window.IcePalace.getProductById(button.dataset.productId);
+                if (!product) return;
+                managerSound('productAdd', product.name);
+                const existing = managerState.cart.find((item) => item.id === product.id && item.kind !== 'scoop-cup');
+                if (existing) existing.quantity += 1;
+                else managerState.cart.push({ id: product.id, name: product.name, unitPrice: product.price, quantity: 1 });
+                renderCart();
+              });
+            });
+          }
+
+          strip.querySelectorAll('.category-chip').forEach((button) => {
+            button.addEventListener('click', () => {
+              managerSound('click');
+              managerState.selectedCategory = button.dataset.category;
+              renderOrderBuilder();
+            });
+          });
+
+          renderCart();
+        }
+
+        function renderCart() {
+          const orderType = document.querySelector('input[name="manager-order-type"]:checked').value;
+          const meta = document.getElementById('manager-order-meta');
+          meta.innerHTML = orderType === 'delivery'
+            ? `
+              <div class="form-group"><label>Customer Name</label><input id="manager-customer-name" type="text" /></div>
+              <div class="form-group"><label>Address</label><input id="manager-delivery-address" type="text" /></div>
+              <div class="form-group"><label>Contact</label><input id="manager-contact" type="text" /></div>
+              <div class="form-group"><label>Delivery Date</label><input id="manager-delivery-date" type="date" /></div>
+            `
+            : orderType === 'takeaway'
+              ? `<div class="form-group"><label>Customer Name</label><input id="manager-customer-name" type="text" /></div>`
+              : `<div class="form-group"><label>Table Number</label><input id="manager-table-no" type="text" /></div>`;
+
+          meta.insertAdjacentHTML('beforeend', '<div class="form-group"><label>Oder Taker Boy:</label><textarea id="manager-order-message" rows="3" placeholder="waiter name like ali, husnain....."></textarea></div>');
+
+          const cart = document.getElementById('manager-cart');
+          if (!managerState.cart.length) {
+            cart.innerHTML = '<li class="empty-state">Cart is empty.</li>';
+          } else {
+            cart.innerHTML = managerState.cart.map((item) => {
+              const displayName = item.kind === 'scoop-cup' ? `${item.label || item.name} — ${window.IcePalace.formatFlavorBreakdown(item.flavors || {})}` : item.name;
+              const unitDisplay = item.kind === 'scoop-cup' ? `${window.IcePalace.formatCurrency(item.unitPrice)} fixed` : window.IcePalace.formatCurrency(item.unitPrice);
+              return `
+                <li class="summary-item">
+                  <div><strong>${displayName}</strong><br><span class="muted">${unitDisplay}</span></div>
+                  <div class="qty-controls">
+                    <button type="button" data-cart-action="decrease" data-id="${item.id}">−</button>
+                    <span>${item.quantity}</span>
+                    <button type="button" data-cart-action="increase" data-id="${item.id}">+</button>
+                  </div>
+                  <button class="btn btn-ghost small" type="button" data-cart-action="remove" data-id="${item.id}">Remove</button>
+                </li>
+              `;
+            }).join('');
+          }
+
+          cart.querySelectorAll('[data-cart-action]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const item = managerState.cart.find((entry) => entry.id === button.dataset.id);
+              if (!item) return;
+              const action = button.dataset.cartAction;
+              const soundName = item.kind === 'scoop-cup' ? item.label : item.name;
+              if (action === 'increase') {
+                item.quantity += 1;
+                managerSound('productIncrease', soundName);
+              }
+              if (action === 'decrease') {
+                item.quantity -= 1;
+                managerSound('productDecrease', soundName);
+                if (item.quantity <= 0) managerState.cart = managerState.cart.filter((entry) => entry.id !== item.id);
+              }
+              if (action === 'remove') {
+                if (item.kind === 'scoop-cup' && item.categoryId) delete managerState.cupFlavorSelections[item.categoryId];
+                managerSound('productRemove', soundName);
+                managerState.cart = managerState.cart.filter((entry) => entry.id !== item.id);
+              }
+              renderCart();
+            });
+          });
+
+          const totals = window.IcePalace.computeCartTotals(managerState.cart);
+          document.getElementById('manager-subtotal').textContent = window.IcePalace.formatCurrency(totals.subtotal);
+          document.getElementById('manager-discount').textContent = window.IcePalace.formatCurrency(totals.discount);
+          document.getElementById('manager-total').textContent = window.IcePalace.formatCurrency(totals.total);
+        }
+
+        function submitManagerOrder() {
+          if (!managerState.cart.length) {
+            window.IcePalace.showToast('Cart is empty.', 'error');
+            managerSound('error');
+            return;
+          }
+
+          const orderType = document.querySelector('input[name="manager-order-type"]:checked').value;
+          const customerName = document.getElementById('manager-customer-name')?.value || '';
+          const tableNo = document.getElementById('manager-table-no')?.value || '';
+          const address = document.getElementById('manager-delivery-address')?.value || '';
+          const contact = document.getElementById('manager-contact')?.value || '';
+          const deliveryDate = document.getElementById('manager-delivery-date')?.value || '';
+
+          if (orderType === 'dine-in' && !tableNo.trim()) {
+            window.IcePalace.showToast('Table number required.', 'error');
+            managerSound('error');
+            return;
+          }
+          if ((orderType === 'takeaway' || orderType === 'delivery') && !customerName.trim()) {
+            window.IcePalace.showToast('Customer required.', 'error');
+            managerSound('error');
+            return;
+          }
+          if (orderType === 'delivery' && (!address.trim() || !contact.trim())) {
+            window.IcePalace.showToast('Delivery address and contact required.', 'error');
+            managerSound('error');
+            return;
+          }
+          if (orderType === 'delivery' && !deliveryDate) {
+            window.IcePalace.showToast('Delivery date required.', 'error');
+            managerSound('error');
+            return;
+          }
+
+          const totals = window.IcePalace.computeCartTotals(managerState.cart);
+          const message = document.getElementById('manager-order-message')?.value.trim() || '';
+          const order = {
+            id: 'ORD-' + Math.floor(Math.random() * 90000 + 10000),
+            type: orderType,
+            status: 'pending',
+            tableNo: tableNo || '',
+            customerName: customerName || '',
+            deliveryAddress: address || '',
+            contactNumber: contact || '',
+            deliveryDate,
+            takenBy: user.name,
+            takenById: user.id,
+            createdAt: new Date().toISOString(),
+            message,
+            items: managerState.cart.map((item) => ({
+              id: item.id,
+              productId: item.kind === 'scoop-cup' ? item.categoryId : item.id,
+              name: item.kind === 'scoop-cup' ? `${item.label || item.name} — ${window.IcePalace.formatFlavorBreakdown(item.flavors || {})}` : item.name,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              kind: item.kind,
+              flavors: item.kind === 'scoop-cup' ? item.flavors : undefined
+            })),
+            subtotal: totals.subtotal,
+            discount: totals.discount,
+            total: totals.total
+          };
+
+          const orders = window.IcePalace.getOrders();
+          orders.unshift(order);
+          window.IcePalace.saveOrders(orders);
+          managerState.cart = [];
+          managerState.cupFlavorSelections = {};
+          window.renderManagerDashboard();
+          window.IcePalace.showToast('Order added successfully.');
+          managerSound('success');
+        }
+
+        function renderDeals() {
+          const deals = window.IcePalace.getDeals();
+          const productSelect = document.getElementById('deal-product');
+          productSelect.innerHTML = window.IcePalace.getProducts().map((product) => `<option value="${product.id}">${product.name}</option>`).join('');
+          document.getElementById('deal-preview').innerHTML = managerState.dealItems.length
+            ? managerState.dealItems.map((item) => `
+              <div class="summary-item">
+                <div><strong>${window.IcePalace.getProductById(item.productId)?.name || 'Item'}</strong></div>
+                <div class="qty-controls">
+                  <button type="button" data-deal-action="decrease" data-deal-product-id="${item.productId}">−</button>
+                  <span>${item.qty}</span>
+                  <button type="button" data-deal-action="increase" data-deal-product-id="${item.productId}">+</button>
+                </div>
+                <button class="btn btn-ghost small" type="button" data-deal-action="remove" data-deal-product-id="${item.productId}">Remove</button>
+              </div>
+            `).join('')
+            : '<div class="empty-state">Select products for the deal.</div>';
+
+          document.querySelectorAll('[data-deal-action]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const productId = button.dataset.dealProductId;
+              const target = managerState.dealItems.find((item) => item.productId === productId);
+              if (!target) return;
+              if (button.dataset.dealAction === 'increase') target.qty += 1;
+              if (button.dataset.dealAction === 'decrease') {
+                target.qty -= 1;
+                if (target.qty <= 0) managerState.dealItems = managerState.dealItems.filter((item) => item.productId !== productId);
+              }
+              if (button.dataset.dealAction === 'remove') {
+                managerState.dealItems = managerState.dealItems.filter((item) => item.productId !== productId);
+              }
+              renderDeals();
+            });
+          });
+
+          document.getElementById('deal-list').innerHTML = deals.map((deal) => `
+            <div class="panel toggle-card" style="margin-bottom:10px;" data-deal-id="${deal.id}">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+                <div>
+                  <strong>${deal.name}</strong>
+                  <p class="muted">${(deal.items || []).map((item) => `${window.IcePalace.getProductById(item.productId)?.name || 'Item'} x${item.qty}`).join(', ')}</p>
+                </div>
+                <span>${window.IcePalace.formatCurrency(deal.price)}</span>
+              </div>
+              <div class="toggle-detail deal-detail" data-deal-detail-id="${deal.id}" hidden>
+                <div class="detail-heading"><strong>Deal details</strong><button class="modal-close" type="button" data-close-deal="${deal.id}">×</button></div>
+                <p class="muted">${(deal.items || []).map((item) => `${window.IcePalace.getProductById(item.productId)?.name || 'Item'} × ${item.qty}`).join(', ')}</p>
+              </div>
+              <div class="action-row">
+                <button class="btn btn-secondary" type="button" data-deal-edit-id="${deal.id}">Edit</button>
+                <button class="btn btn-danger" type="button" data-deal-delete-id="${deal.id}">Delete</button>
+              </div>
+            </div>
+          `).join('');
+
+          document.querySelectorAll('[data-deal-id]').forEach((card) => {
+            card.addEventListener('click', (event) => {
+              if (event.target.closest('button')) return;
+              const detail = card.querySelector(`[data-deal-detail-id="${card.dataset.dealId}"]`);
+              detail.hidden = !detail.hidden;
+            });
+          });
+          document.querySelectorAll('[data-close-deal]').forEach((button) => {
+            button.addEventListener('click', () => { button.closest('.deal-detail').hidden = true; });
+          });
+
+          document.querySelectorAll('[data-deal-edit-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const deal = deals.find((entry) => entry.id === button.dataset.dealEditId);
+              if (!deal) return;
+              document.getElementById('deal-name').value = deal.name;
+              document.getElementById('deal-price').value = deal.price;
+              managerState.dealItems = (deal.items || []).map((item) => ({ productId: item.productId, qty: item.qty }));
+              renderDeals();
+            });
+          });
+
+          document.querySelectorAll('[data-deal-delete-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const updated = deals.filter((deal) => deal.id !== button.dataset.dealDeleteId);
+              window.IcePalace.saveDeals(updated);
+              renderDeals();
+            });
+          });
+        }
+
+        function addDealItem() {
+          const productId = document.getElementById('deal-product').value;
+          const exists = managerState.dealItems.find((item) => item.productId === productId);
+          if (exists) exists.qty += 1;
+          else managerState.dealItems.push({ productId, qty: 1 });
+          renderDeals();
+        }
+
+        function saveDeal() {
+          const name = document.getElementById('deal-name').value.trim();
+          const price = Number(document.getElementById('deal-price').value || 0);
+          if (!name || !managerState.dealItems.length) {
+            window.IcePalace.showToast('Deal name and at least one product are required.', 'error');
+            return;
+          }
+
+          const deals = window.IcePalace.getDeals();
+          const existingIndex = deals.findIndex((deal) => deal.name.toLowerCase() === name.toLowerCase() && deal.price === price);
+          if (existingIndex >= 0) {
+            deals[existingIndex].items = managerState.dealItems;
+            window.IcePalace.saveDeals(deals);
+          } else {
+            deals.push({ id: window.IcePalace.uid('deal'), name, price, active: true, items: managerState.dealItems });
+            window.IcePalace.saveDeals(deals);
+          }
+          managerState.dealItems = [];
+          document.getElementById('deal-name').value = '';
+          document.getElementById('deal-price').value = '';
+          renderDeals();
+        }
+
+        function renderCategoryList() {
+          document.getElementById('category-list').innerHTML = window.IcePalace.getCategories().map((category) => `
+            <div class="panel" style="margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; gap:12px; align-items:center;">
+                <span>${category.name || 'Uncategorized'}</span>
+                <div class="action-row">
+                  <button class="btn btn-secondary small" data-category-edit-id="${category.id}" type="button">Edit</button>
+                  <button class="btn btn-danger small" data-category-id="${category.id}" type="button">Delete</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+
+          document.querySelectorAll('[data-category-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const categories = window.IcePalace.getCategories().filter((category) => category.id !== button.dataset.categoryId);
+              window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.categories, categories);
+              renderCategoryList();
+              renderOrderBuilder();
+              populateCatalogSelects();
+            });
+          });
+
+          document.querySelectorAll('[data-category-edit-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const category = window.IcePalace.getCategories().find((entry) => entry.id === button.dataset.categoryEditId);
+              if (!category) return;
+              const name = prompt('Update category name:', category.name);
+              if (name === null) return;
+              const categories = window.IcePalace.getCategories().map((entry) => (
+                entry.id === category.id ? { ...entry, name: name.trim() || entry.name } : entry
+              ));
+              window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.categories, categories);
+              renderCategoryList();
+              renderOrderBuilder();
+              populateCatalogSelects();
+            });
+          });
+        }
+
+        function renderProductList() {
+          document.getElementById('product-list').innerHTML = window.IcePalace.getProducts().map((product) => `
+            <div class="panel" style="margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap;">
+                <div>
+                  <strong>${product.name || 'Unnamed product'}</strong><br>
+                  <span class="muted">${window.IcePalace.getCategoryById(product.categoryId)?.name || 'Uncategorized'} • ${window.IcePalace.formatCurrency(product.price)}</span>
+                </div>
+                <div class="action-row">
+                  <button class="btn btn-secondary small" data-product-edit-id="${product.id}" type="button">Edit</button>
+                  <button class="btn btn-danger small" data-product-delete-id="${product.id}" type="button">Delete</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+
+          document.querySelectorAll('[data-product-delete-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const products = window.IcePalace.getProducts().filter((product) => product.id !== button.dataset.productDeleteId);
+              window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.products, products);
+              renderProductList();
+              renderOrderBuilder();
+              populateCatalogSelects();
+            });
+          });
+
+          document.querySelectorAll('[data-product-edit-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const product = window.IcePalace.getProducts().find((entry) => entry.id === button.dataset.productEditId);
+              if (!product) return;
+              const name = prompt('Update product name:', product.name);
+              if (name === null) return;
+              const price = prompt('Update product price:', String(product.price));
+              if (price === null) return;
+              const categoryId = prompt('Update category id (leave blank to keep current):', product.categoryId || '');
+              const nextCategory = categoryId && categoryId.trim() ? categoryId.trim() : product.categoryId;
+              const products = window.IcePalace.getProducts().map((entry) => (
+                entry.id === product.id ? { ...entry, name: name.trim() || entry.name, price: Number(price) || entry.price, categoryId: nextCategory } : entry
+              ));
+              window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.products, products);
+              renderProductList();
+              renderOrderBuilder();
+              populateCatalogSelects();
+            });
+          });
+        }
+
+        function renderStockList() {
+          const stock = window.IcePalace.getStock();
+          document.getElementById('stock-list').innerHTML = stock.map((stockItem) => {
+            const stockLevel = Number(stockItem.quantity || 0);
+            const threshold = Number(stockItem.minimumThreshold || 0);
+            const alertClass = stockLevel < threshold ? 'status-cancelled' : 'status-paid';
+            const history = (stockItem.history || []).map((entry) => `
+              <div class="bill-row"><span>${entry.type}</span><span>${entry.qty}</span><span>${window.IcePalace.formatDate(entry.date)}</span></div>
+            `).join('') || '<div class="empty-state">No stock history.</div>';
+            return `
+              <div class="panel" style="margin-bottom:10px;">
+                <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+                  <strong>${stockItem.name || 'Ingredient'}</strong>
+                  <span class="status-badge ${alertClass}">${stockLevel < threshold ? 'Low Stock' : 'Healthy'}</span>
+                </div>
+                <div class="bill-row"><span>Unit</span><span>${stockItem.unit || 'Count'}</span></div>
+                <div class="bill-row"><span>Used</span><span>${Number(stockItem.used || 0).toFixed(2)}</span></div>
+                <div class="bill-row"><span>Current</span><span>${stockLevel.toFixed(2)}</span></div>
+                <div class="bill-row"><span>Threshold</span><span>${threshold}</span></div>
+                <div class="muted">Updated: ${window.IcePalace.formatDate(stockItem.lastUpdated)}</div>
+                <div class="muted" style="margin-top:8px;">History</div>
+                ${history}
+              </div>
+            `;
+          }).join('') || '<div class="empty-state">No stock available.</div>';
+        }
+
+        function renderSuppliers() {
+          const list = window.IcePalace.getSuppliers();
+          document.getElementById('supplier-list').innerHTML = list.map((supplier) => `
+            <div class="panel toggle-card" style="margin-bottom:10px; cursor:pointer;" data-supplier-id="${supplier.id}">
+              <strong>${supplier.name}</strong>
+              <p class="muted">${supplier.companyName} • ${supplier.contact}</p>
+            </div>
+          `).join('');
+
+          document.querySelectorAll('[data-supplier-id]').forEach((card) => {
+            card.addEventListener('click', () => {
+              const supplier = list.find((entry) => entry.id === card.dataset.supplierId);
+              if (!supplier) return;
+              const existingDetail = document.querySelector(`[data-supplier-detail-id="${supplier.id}"]`);
+              if (existingDetail) { existingDetail.remove(); return; }
+              const html = `
+                <div class="panel toggle-detail" data-supplier-detail-id="${supplier.id}">
+                  <div class="detail-heading"><h4>${supplier.name}</h4><button class="modal-close" type="button" data-close-detail="${supplier.id}">×</button></div>
+                  <div class="bill-row"><span>Company</span><span>${supplier.companyName || '-'}</span></div>
+                  <div class="bill-row"><span>Phone</span><span>${supplier.contact || '-'}</span></div>
+                  <div class="bill-row"><span>Email</span><span>${supplier.email || '-'}</span></div>
+                  <div class="bill-row"><span>Products</span><span>${supplier.productsSupplied || '-'}</span></div>
+                  <div class="bill-row"><span>Notes</span><span>${supplier.notes || '-'}</span></div>
+                  <div class="action-row">
+                    <button class="btn btn-secondary" type="button" data-edit-supplier-id="${supplier.id}">Edit</button>
+                  </div>
+                </div>
+              `;
+              card.insertAdjacentHTML('afterend', html);
+              const detail = card.nextElementSibling;
+              detail.querySelector('[data-edit-supplier-id]')?.addEventListener('click', () => {
+                const nextName = prompt('Supplier name:', supplier.name || '');
+                if (nextName === null) return;
+                const nextPhone = prompt('Supplier phone:', supplier.contact || '');
+                if (nextPhone === null) return;
+                const nextEmail = prompt('Supplier email:', supplier.email || '');
+                if (nextEmail === null) return;
+                const nextCompany = prompt('Supplier company:', supplier.companyName || '');
+                if (nextCompany === null) return;
+                const nextProducts = prompt('Products supplied:', supplier.productsSupplied || '');
+                if (nextProducts === null) return;
+                const nextNotes = prompt('Notes:', supplier.notes || '');
+                if (nextNotes === null) return;
+                const updated = list.map((entry) => entry.id === supplier.id ? { ...entry, name: nextName.trim() || entry.name, contact: nextPhone.trim() || entry.contact, email: nextEmail.trim() || entry.email, companyName: nextCompany.trim() || entry.companyName, productsSupplied: nextProducts.trim() || entry.productsSupplied, notes: nextNotes.trim() || entry.notes } : entry);
+                window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.suppliers, updated);
+                renderSuppliers();
+              });
+              detail.querySelector('[data-close-detail]')?.addEventListener('click', () => detail.remove());
+            });
+          });
+        }
+
+        function renderWorkers() {
+          const workers = window.IcePalace.getUsers();
+          const today = new Date();
+          const cycleDate = new Date(today.getFullYear(), today.getMonth() - (today.getDate() < 5 ? 1 : 0), 1);
+          const salaryCycle = `${cycleDate.getFullYear()}-${String(cycleDate.getMonth() + 1).padStart(2, '0')}`;
+          const leaveCycle = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+          document.getElementById('worker-list').innerHTML = workers.map((worker) => `
+            <div class="panel toggle-card" style="margin-bottom:10px; cursor:pointer;" data-worker-id="${worker.id}">
+              <strong>${worker.name}</strong>
+              <p class="muted">${worker.role || 'Role not set'} • Remaining salary: Rs ${Math.max(Number(worker.salary || 0) - (worker.salaryAdvances || []).filter((entry) => entry.cycle === salaryCycle).reduce((sum, entry) => sum + Number(entry.amount || 0), 0))}</p>
+            </div>
+          `).join('');
+
+          document.querySelectorAll('[data-worker-id]').forEach((card) => {
+            card.addEventListener('click', () => {
+              const worker = workers.find((entry) => entry.id === card.dataset.workerId);
+              if (!worker) return;
+              const existingDetail = document.querySelector(`[data-worker-detail-id="${worker.id}"]`);
+              if (existingDetail) { existingDetail.remove(); return; }
+              const html = `
+                <div class="panel toggle-detail" data-worker-detail-id="${worker.id}">
+                  <div class="detail-heading"><h4>${worker.name}</h4><button class="modal-close" type="button" data-close-detail="${worker.id}">×</button></div>
+                  <div class="bill-row"><span>Age</span><span>${worker.age || '-'}</span></div>
+                  <div class="bill-row"><span>Join Date</span><span>${worker.joinDate || '-'}</span></div>
+                  <div class="bill-row"><span>Role</span><span>${worker.role || '-'}</span></div>
+                  <div class="bill-row"><span>Contact</span><span>${worker.contact || '-'}</span></div>
+                  <div class="bill-row"><span>Address</span><span>${worker.address || '-'}</span></div>
+                  <div class="bill-row"><span>Salary</span><span>${worker.salary || '-'}</span></div>
+                  <div class="bill-row"><span>Advances this cycle</span><span>Rs ${(worker.salaryAdvances || []).filter((entry) => entry.cycle === salaryCycle).reduce((sum, entry) => sum + Number(entry.amount || 0), 0)}</span></div>
+                  <div class="bill-row"><span>Remaining salary</span><strong>Rs ${Math.max(Number(worker.salary || 0) - (worker.salaryAdvances || []).filter((entry) => entry.cycle === salaryCycle).reduce((sum, entry) => sum + Number(entry.amount || 0), 0))}</strong></div>
+                  <div class="bill-row"><span>Leave count this month</span><span>${(worker.leaveEntries || []).filter((entry) => entry.date && entry.date.slice(0, 7) === leaveCycle).length}</span></div>
+                  <div class="muted">Leave dates: ${(worker.leaveEntries || []).filter((entry) => entry.date && entry.date.slice(0, 7) === leaveCycle).map((entry) => entry.date).join(', ') || 'None'}</div>
+                  <div class="bill-row"><span>Duties</span><span>${worker.duties || '-'}</span></div>
+                  <div class="action-row">
+                    <button class="btn btn-warning" type="button" data-add-advance-id="${worker.id}">Log Advance</button>
+                    <button class="btn btn-secondary" type="button" data-add-leave-id="${worker.id}">Log Leave</button>
+                    <button class="btn btn-secondary" type="button" data-edit-worker-id="${worker.id}">Edit</button>
+                    <button class="btn btn-danger" type="button" data-delete-worker-id="${worker.id}">Delete</button>
+                  </div>
+                </div>
+              `;
+              card.insertAdjacentHTML('afterend', html);
+              const detail = card.nextElementSibling;
+              detail.querySelector('[data-add-advance-id]')?.addEventListener('click', () => {
+                const amount = Number(prompt('Advance amount (Rs):', '0') || 0);
+                if (amount <= 0) return;
+                const date = prompt('Advance date (YYYY-MM-DD):', new Date().toISOString().slice(0, 10));
+                if (!date) return;
+                const updated = workers.map((entry) => entry.id === worker.id ? { ...entry, salaryAdvances: [...(entry.salaryAdvances || []), { date, amount, cycle: salaryCycle }] } : entry);
+                window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.users, updated);
+                renderWorkers();
+              });
+              detail.querySelector('[data-add-leave-id]')?.addEventListener('click', () => {
+                const date = prompt('Leave date (YYYY-MM-DD):', new Date().toISOString().slice(0, 10));
+                if (!date) return;
+                const updated = workers.map((entry) => entry.id === worker.id ? { ...entry, leaveEntries: [...(entry.leaveEntries || []), { date }] } : entry);
+                window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.users, updated);
+                renderWorkers();
+              });
+              detail.querySelector('[data-edit-worker-id]')?.addEventListener('click', () => {
+                const nextName = prompt('Worker name:', worker.name || '');
+                if (nextName === null) return;
+                const nextAge = prompt('Age:', worker.age || '');
+                if (nextAge === null) return;
+                const nextRole = prompt('Role:', worker.role || 'Waiter');
+                if (nextRole === null) return;
+                const nextContact = prompt('Contact:', worker.contact || '');
+                if (nextContact === null) return;
+                const nextAddress = prompt('Address:', worker.address || '');
+                if (nextAddress === null) return;
+                const nextJoinDate = prompt('Join date (YYYY-MM-DD):', worker.joinDate || '');
+                if (nextJoinDate === null) return;
+                const nextSalary = prompt('Salary:', worker.salary || '');
+                if (nextSalary === null) return;
+                const nextDuties = prompt('Duties:', worker.duties || '');
+                if (nextDuties === null) return;
+                const updated = workers.map((entry) => entry.id === worker.id ? { ...entry, name: nextName.trim() || entry.name, age: Number(nextAge) || entry.age, role: nextRole.trim() || entry.role, contact: nextContact.trim() || entry.contact, address: nextAddress.trim() || entry.address, joinDate: nextJoinDate.trim() || entry.joinDate, salary: Number(nextSalary) || entry.salary, duties: nextDuties.trim() || entry.duties } : entry);
+                window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.users, updated);
+                renderWorkers();
+              });
+              detail.querySelector('[data-delete-worker-id]')?.addEventListener('click', () => {
+                const updated = workers.filter((entry) => entry.id !== worker.id);
+                window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.users, updated);
+                renderWorkers();
+              });
+              detail.querySelector('[data-close-detail]')?.addEventListener('click', () => detail.remove());
+            });
+          });
+        }
+
+        function renderReport() {
+          const type = document.getElementById('report-type').value;
+          const from = document.getElementById('report-from').value;
+          const to = document.getElementById('report-to').value;
+          let orders = window.IcePalace.getOrders().filter((order) => order.status !== 'pending');
+
+          if (type === 'daily') {
+            const day = from || new Date().toISOString().slice(0, 10);
+            orders = orders.filter((order) => order.createdAt && new Date(order.createdAt).toISOString().slice(0, 10) === day);
+          } else if (type === 'weekly') {
+            const start = from ? new Date(from) : new Date(Date.now() - 7 * 86400000);
+            const end = to ? new Date(to + 'T23:59:59') : new Date();
+            orders = orders.filter((order) => {
+              const d = new Date(order.createdAt);
+              return d >= start && d <= end;
+            });
+          } else if (type === 'monthly') {
+            const monthStart = from ? new Date(from + '-01T00:00:00') : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            const monthEnd = to ? new Date(to + '-31T23:59:59') : new Date();
+            orders = orders.filter((order) => {
+              const d = new Date(order.createdAt);
+              return d >= monthStart && d <= monthEnd;
+            });
+          }
+
+          const total = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+
+          document.getElementById('report-output').innerHTML = `
+            <div class="panel">
+              <h4>Summary</h4>
+              <div class="bill-row"><span>Type</span><span>${type}</span></div>
+              <div class="bill-row"><span>Orders</span><span>${orders.length}</span></div>
+              <div class="bill-row"><span>Total</span><span>${window.IcePalace.formatCurrency(total)}</span></div>
+              <table style="margin-top:12px;">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Type</th>
+                    <th>Customer</th>
+                    <th>Waiter</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${orders.map((order) => `
+                    <tr>
+                      <td>${order.id}</td>
+                      <td>${order.type}</td>
+                      <td>${window.IcePalace.getOrderCustomerDisplay(order)}</td>
+                      <td>${order.takenBy || 'Manager'}</td>
+                      <td>${window.IcePalace.formatCurrency(order.total || 0)}</td>
+                      <td>${order.status}</td>
+                      <td>${new Date(order.createdAt).toLocaleDateString('en-PK')}</td>
+                      <td>${new Date(order.createdAt).toLocaleTimeString('en-PK')}</td>
+                    </tr>
+                  `).join('') || '<tr><td colspan="8">No records found.</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        document.addEventListener('click', (event) => {
+          const completeButton = event.target.closest('.js-complete-order');
+          if (completeButton) {
+            completeOrder(completeButton.dataset.orderId);
+          }
+          const payButton = event.target.closest('.js-pay-order');
+          if (payButton) openPaymentModal(payButton.dataset.orderId);
+          const confirmPayment = event.target.closest('.js-confirm-payment');
+          if (confirmPayment) payOrder(confirmPayment.dataset.orderId);
+          if (event.target.closest('[data-close-payment="true"]')) closePaymentModal();
+        });
+
+        document.querySelectorAll('input[name="manager-order-type"]').forEach((radio) => radio.addEventListener('change', () => {
+          managerSound('click');
+          renderCart();
+        }));
+        document.getElementById('manager-clear-cart').addEventListener('click', () => {
+          managerSound('click');
+          managerState.cart = [];
+          renderCart();
+        });
+        document.getElementById('manager-submit-order').addEventListener('click', submitManagerOrder);
+        document.addEventListener('click', (event) => {
+          if (!(event.target instanceof Element)) return;
+          const button = event.target.closest('button');
+          if (!button || button.matches('.product-card, .category-chip, [data-flavor-action], [data-cart-action], #manager-add-scoop-cup, #manager-clear-cart, #manager-submit-order')) return;
+          managerSound('click');
+        });
+        document.getElementById('generate-report').addEventListener('click', renderReport);
+        document.getElementById('print-report').addEventListener('click', () => {
+          const reportBox = document.getElementById('report-output');
+          if (!reportBox || !reportBox.innerHTML.trim()) {
+            renderReport();
+          }
+          setTimeout(() => window.print(), 150);
+        });
+        document.getElementById('add-deal-item').addEventListener('click', addDealItem);
+        document.getElementById('save-deal').addEventListener('click', saveDeal);
+
+        document.getElementById('save-category').addEventListener('click', () => {
+          const name = document.getElementById('category-name').value.trim();
+          if (!name) {
+            window.IcePalace.showToast('Category name is required.', 'error');
+            return;
+          }
+          const categories = window.IcePalace.getCategories();
+          categories.push({ id: window.IcePalace.uid('cat'), name });
+          window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.categories, categories);
+          document.getElementById('category-name').value = '';
+          renderCategoryList();
+          renderOrderBuilder();
+          populateCatalogSelects();
+        });
+
+        document.getElementById('save-product').addEventListener('click', () => {
+          const name = document.getElementById('product-name').value.trim();
+          const price = Number(document.getElementById('product-price').value || 0);
+          const categoryId = document.getElementById('product-category').value;
+          if (!name || !price || !categoryId) {
+            window.IcePalace.showToast('Product name, price, and category are required.', 'error');
+            return;
+          }
+          const products = window.IcePalace.getProducts();
+          products.push({ id: window.IcePalace.uid('prod'), name, price, categoryId });
+          window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.products, products);
+          document.getElementById('product-name').value = '';
+          document.getElementById('product-price').value = '';
+          renderProductList();
+          renderOrderBuilder();
+          populateCatalogSelects();
+        });
+
+        document.getElementById('save-stock').addEventListener('click', () => {
+          const ingredientId = document.getElementById('stock-ingredient').value;
+          const quantity = Number(document.getElementById('stock-qty').value || 0);
+          const unitPrice = Number(document.getElementById('stock-unit-price').value || 0);
+          const threshold = Number(document.getElementById('stock-threshold').value || 0);
+          const supplierName = document.getElementById('stock-supplier-name').value.trim();
+          const reference = document.getElementById('stock-reference').value.trim();
+          const purchaseDate = document.getElementById('stock-purchase-date').value || new Date().toISOString().slice(0, 10);
+          const ingredient = window.IcePalace.getIngredients().find((entry) => entry.id === ingredientId);
+          if (!ingredientId || !ingredient || quantity <= 0) {
+            window.IcePalace.showToast('Select an ingredient and enter a quantity greater than zero.', 'error');
+            return;
+          }
+          const stock = window.IcePalace.getStock();
+          const existing = stock.find((entry) => entry.ingredientId === ingredientId);
+          const nextQty = existing ? Number(existing.quantity || 0) + quantity : quantity;
+          const nextEntry = {
+            id: existing ? existing.id : window.IcePalace.uid('stock'),
+            ingredientId,
+            name: ingredient.name,
+            unit: ingredient.unit,
+            quantity: nextQty,
+            used: Number(existing?.used || 0),
+            minimumThreshold: threshold,
+            unitPrice,
+            lastUpdated: new Date().toISOString(),
+            supplierName,
+            history: [
+              ...((existing && existing.history) || []),
+              {
+                type: 'Purchase',
+                qty: quantity,
+                unitPrice,
+                reference,
+                date: purchaseDate,
+                supplierName,
+              }
+            ]
+          };
+
+          if (existing) {
+            const updated = stock.map((entry) => entry.ingredientId === ingredientId ? nextEntry : entry);
+            window.IcePalace.saveStock(updated);
+          } else {
+            stock.push(nextEntry);
+            window.IcePalace.saveStock(stock);
+          }
+          renderStockList();
+          renderDashboard();
+          document.getElementById('stock-qty').value = '';
+          document.getElementById('stock-unit-price').value = '';
+          document.getElementById('stock-threshold').value = '';
+          document.getElementById('stock-supplier-name').value = '';
+          document.getElementById('stock-reference').value = '';
+        });
+
+        document.getElementById('save-stock-usage').addEventListener('click', () => {
+          const ingredientId = document.getElementById('stock-use-ingredient').value;
+          const quantity = Number(document.getElementById('stock-use-qty').value);
+          const reference = document.getElementById('stock-use-reference').value.trim();
+          const usageDate = document.getElementById('stock-use-date').value || new Date().toISOString().slice(0, 10);
+          const ingredient = window.IcePalace.getIngredients().find((entry) => entry.id === ingredientId);
+          const stock = window.IcePalace.getStock();
+          const existing = stock.find((entry) => entry.ingredientId === ingredientId);
+          if (!ingredientId || !ingredient || !Number.isFinite(quantity) || quantity <= 0) {
+            window.IcePalace.showToast('Select an ingredient and enter a quantity greater than zero.', 'error');
+            return;
+          }
+          if (!existing || Number(existing.quantity || 0) < quantity) {
+            window.IcePalace.showToast('Usage quantity exceeds the available stock.', 'error');
+            return;
+          }
+          const updated = stock.map((entry) => entry.ingredientId === ingredientId ? {
+            ...entry,
+            quantity: Number(entry.quantity || 0) - quantity,
+            used: Number(entry.used || 0) + quantity,
+            lastUpdated: new Date().toISOString(),
+            history: [
+              ...(entry.history || []),
+              { type: 'Usage', qty: quantity, reference, date: usageDate }
+            ]
+          } : entry);
+          window.IcePalace.saveStock(updated);
+          renderStockList();
+          renderDashboard();
+          document.getElementById('stock-use-qty').value = '';
+          document.getElementById('stock-use-reference').value = '';
+          window.IcePalace.showToast(`${quantity} ${ingredient.unit} recorded as used.`);
+        });
+
+        document.getElementById('save-supplier').addEventListener('click', () => {
+          const suppliers = window.IcePalace.getSuppliers();
+          suppliers.push({
+            id: window.IcePalace.uid('sup'),
+            name: document.getElementById('supplier-name').value.trim(),
+            contact: document.getElementById('supplier-phone').value.trim(),
+            email: document.getElementById('supplier-email').value.trim(),
+            companyName: document.getElementById('supplier-company').value.trim(),
+            productsSupplied: document.getElementById('supplier-products').value.trim(),
+            notes: document.getElementById('supplier-notes').value.trim()
+          });
+          window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.suppliers, suppliers);
+          renderSuppliers();
+        });
+
+        document.getElementById('save-worker').addEventListener('click', () => {
+          const users = window.IcePalace.getUsers();
+          const name = document.getElementById('worker-name').value.trim();
+          const role = document.getElementById('worker-role').value.trim();
+          if (!name || !role) {
+            window.IcePalace.showToast('Worker name and role are required.', 'error');
+            return;
+          }
+          users.push({
+            id: window.IcePalace.uid('user'),
+            name,
+            age: Number(document.getElementById('worker-age').value || 0),
+            address: document.getElementById('worker-address').value.trim(),
+            contact: document.getElementById('worker-contact').value.trim(),
+            joinDate: document.getElementById('worker-join-date').value,
+            salary: Number(document.getElementById('worker-salary').value || 0),
+            role
+          });
+          window.IcePalace.saveJSON(window.IcePalace.STORAGE_KEYS.users, users);
+          ['worker-name', 'worker-age', 'worker-address', 'worker-contact', 'worker-join-date', 'worker-salary', 'worker-role'].forEach((id) => {
+            document.getElementById(id).value = '';
+          });
+          renderWorkers();
+          window.IcePalace.showToast('Worker added successfully.');
+        });
+
+        function populateCatalogSelects() {
+          const categoryOptions = window.IcePalace.getCategories().map((category) => `<option value="${category.id}">${category.name}</option>`).join('');
+          const productOptions = window.IcePalace.getProducts().map((product) => `<option value="${product.id}">${product.name}</option>`).join('');
+          document.getElementById('product-category').innerHTML = categoryOptions;
+          const ingredientOptions = window.IcePalace.getIngredients().map((ingredient) => `<option value="${ingredient.id}">${ingredient.name} (${ingredient.unit})</option>`).join('');
+          document.getElementById('stock-ingredient').innerHTML = ingredientOptions;
+          document.getElementById('stock-use-ingredient').innerHTML = ingredientOptions;
+          document.getElementById('deal-product').innerHTML = productOptions;
+        }
+
+        populateCatalogSelects();
+        renderDashboard();
+        renderOrders();
+        renderOrderBuilder();
+        renderDeals();
+        renderCategoryList();
+        renderProductList();
+        renderStockList();
+        renderSuppliers();
+        renderWorkers();
+        renderReport();
+      });
+     
+    </script>
+  </body>
+</html>
